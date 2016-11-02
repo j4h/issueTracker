@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/projects/tasks")
+@RequestMapping(value = "/projects/{projectId}/tasks")
 public class TaskController {
 
     private TaskService taskService;
@@ -19,15 +19,33 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public Task create(@RequestBody Task task) {
+        return taskService.create(task);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public Task update(@PathVariable("projectId") int projectId, @PathVariable("id") int id, @RequestBody Task task) {
+        return taskService.update(projectId, id, task);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Task> getAll(){
-        return taskService.getAll();
+    public List<Task> getAll(@PathVariable ("projectId") int id){
+        return taskService.getProject(id).getTasks();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Task get(@PathVariable("id")int id) {
-        return taskService.get(id);
+    public Task get(@PathVariable("projectId")int projectId, @PathVariable("id")int id) {
+        return taskService.getTaskById(projectId, id);
+    }
+
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+    public String delete(@PathVariable("projectId") int projectId, @PathVariable("id") int id) {
+        taskService.delete(projectId, id);
+        return "Task with ID:" + id+ " was successfully deleted";
     }
 }

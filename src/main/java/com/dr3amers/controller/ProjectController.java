@@ -1,13 +1,11 @@
 package com.dr3amers.controller;
 
 import com.dr3amers.model.Project;
-import com.dr3amers.model.Task;
 import com.dr3amers.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,10 +31,21 @@ public class ProjectController {
         return projectService.getAll();
     }
 
-    @RequestMapping(value = "/{idp}/tasks/{id}")
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+    public String delete(@PathVariable("id") int id) {
+        projectService.delete(id);
+        return "Project with ID:" + id+ " was successfully deleted";
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public Task getTask(@PathVariable("idp") int idp, @PathVariable("id") int id) {
-        Project project = projectService.get(idp);
-        return project.getTasks().get(id - 1);
+    public Project create(@RequestBody Project project) {
+        return projectService.create(project);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Project update(@PathVariable("id") int id, @RequestBody Project project) {
+        return projectService.update(id, project);
     }
 }

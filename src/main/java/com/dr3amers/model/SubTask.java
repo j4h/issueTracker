@@ -2,19 +2,19 @@ package com.dr3amers.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 public class SubTask {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column(unique = true)
     @NotEmpty
     private String name;
+    @Column(name = "description")
     private String description;
     @Column(name = "creation_date")
     private Timestamp creation_date;
