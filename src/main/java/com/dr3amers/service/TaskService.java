@@ -24,39 +24,38 @@ public class TaskService {
     }
 
     public Task create(int projectId, Task task) {
-        getProject(projectId);
-        //set creation_time in the object model
+        //??how can we know that creation comes from current or accessible project
+        getProjectById(projectId);
+        //??do we need to do like this
         task.setCreation_date(Helper.setCurrentTimestamp());
-        //set projectId
-        //task.setProjectId(projectId);
+        task.setProjectId(projectId);
         return taskJpaRepository.saveAndFlush(task);
     }
 
     public Task update(int projectId, int id, Task task) {
-        getProject(projectId);
-        get(id);
-        //task.setId(id);
-        //task.setProjectId(projectId);
-        task.setCreation_date(Helper.setCurrentTimestamp());
+        getTaskByIdFromProject(projectId,id);
+        task.setId(id);
+        task.setProjectId(projectId);
+        task.setCreation_date(Helper.setOldCreationDate(task, taskJpaRepository));
         task.setModification_date(Helper.setCurrentTimestamp());
         return taskJpaRepository.saveAndFlush(task);
     }
 
     public void delete(int projectId, int id) {
-        getProject(projectId);
-        get(id);
+        getTaskByIdFromProject(projectId,id);
         taskJpaRepository.delete(id);
     }
 
-    public Task get(int id) {
-        Task task = taskJpaRepository.findOne(id);
-        if (task == null) {
-            throw new NotFoundException(id);
-        }
-        return task;
+    public Task get(int projectId, int id) {
+        return getTaskByIdFromProject(projectId,id);
     }
 
-    public Project getProject(int id) {
+    public List<Task> getAll(int projectId) {
+        Project project = getProjectById(projectId);
+        return project.getTasks();
+    }
+
+    private Project getProjectById(int id) {
         Project project = projectJpaRepository.findOne(id);
         if (project == null) {
             throw new NotFoundException(id);
@@ -64,7 +63,7 @@ public class TaskService {
         return project;
     }
 
-    public Task getTaskById(int projectId, int id) {
+    private Task getTaskByIdFromProject(int projectId, int id) {
         List<Task> tasks = projectJpaRepository.findOne(projectId).getTasks();
         for (Task task:tasks) {
             if (task.getId() == id){
@@ -72,9 +71,5 @@ public class TaskService {
             }
         }
         throw new NotFoundException(id);
-    }
-
-    public List<Task> getAll() {
-        return taskJpaRepository.findAll();
     }
 }

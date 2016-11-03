@@ -19,28 +19,26 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @RequestMapping(method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Task> getAll(@PathVariable ("projectId") int id){ return taskService.getAll(id); }
+
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     public Task create(@PathVariable("projectId") int projectId, @RequestBody Task task) {
         return taskService.create(projectId, task);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public Task get(@PathVariable("projectId")int projectId, @PathVariable("id")int id) {
+        return taskService.get(projectId, id);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public Task update(@PathVariable("projectId") int projectId, @PathVariable("id") int id, @RequestBody Task task) {
         return taskService.update(projectId, id, task);
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public List<Task> getAll(@PathVariable ("projectId") int id){
-        return taskService.getProject(id).getTasks();
-    }
-
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public Task get(@PathVariable("projectId")int projectId, @PathVariable("id")int id) {
-        return taskService.getTaskById(projectId, id);
     }
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)

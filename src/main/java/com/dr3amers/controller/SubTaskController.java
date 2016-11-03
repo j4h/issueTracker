@@ -21,20 +21,21 @@ public class SubTaskController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public List<SubTask> getAll() {
-        return subTaskService.getAll();
+    public List<SubTask> getAll(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId) {
+        return subTaskService.getAll(projectId,taskId);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public SubTask get(@PathVariable("id") int id) {
-        return subTaskService.get(id);
+    public SubTask get(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId,
+                       @PathVariable("id") int id) {
+        return subTaskService.get(projectId,taskId,id);
     }
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
-    public String delete(@PathVariable("taskId") int taskId,
+    public String delete(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId,
                          @PathVariable("id") int id) {
-        subTaskService.delete(taskId, id);
+        subTaskService.delete(projectId, taskId, id);
         return "SubTask with ID:" + id+ " was successfully deleted";
     }
 
