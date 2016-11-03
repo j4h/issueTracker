@@ -43,7 +43,7 @@ public class ProjectController {
         return projectService.create(project);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Project update(@PathVariable("id") int id, @RequestBody Project project) {
         return projectService.update(id, project);

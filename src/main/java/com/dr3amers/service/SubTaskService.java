@@ -33,9 +33,19 @@ public class SubTaskService {
         return subTask;
     }
 
-    public void delete(int projectId, int taskId, int id) {
+    public SubTask getSubTaskById(int taskId, int id) {
+        List<SubTask> subTasks = taskJpaRepository.findOne(taskId).getSubTaskList();
+        for (SubTask subTask:subTasks) {
+            if (subTask.getId() == id){
+                return subTask;
+            }
+        }
+        throw new NotFoundException(id);
+    }
 
+    public void delete(int taskId, int id) {
         get(id);
+
         subTaskJpaRepository.delete(id);
     }
 

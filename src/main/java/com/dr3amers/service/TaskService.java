@@ -1,11 +1,11 @@
 package com.dr3amers.service;
 
 import com.dr3amers.exception.NotFoundException;
+import com.dr3amers.helper.Helper;
 import com.dr3amers.model.Project;
 import com.dr3amers.model.Task;
 import com.dr3amers.repository.ProjectJpaRepository;
 import com.dr3amers.repository.TaskJpaRepository;
-import com.dr3amers.service.helper.ProjectServiceHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,28 +16,29 @@ public class TaskService {
 
     private TaskJpaRepository taskJpaRepository;
     private ProjectJpaRepository projectJpaRepository;
-    private ProjectServiceHelper projectServiceHelper;
 
     @Autowired
-    public TaskService(TaskJpaRepository taskJpaRepository, ProjectJpaRepository projectJpaRepository,
-                       ProjectServiceHelper projectServiceHelper) {
+    public TaskService(TaskJpaRepository taskJpaRepository, ProjectJpaRepository projectJpaRepository) {
         this.taskJpaRepository = taskJpaRepository;
         this.projectJpaRepository = projectJpaRepository;
-        this.projectServiceHelper = projectServiceHelper;
     }
 
-    public Task create(Task task) {
+    public Task create(int projectId, Task task) {
+        getProject(projectId);
         //set creation_time in the object model
-        task.setCreation_date(projectServiceHelper.setCurrentTimestamp());
+        task.setCreation_date(Helper.setCurrentTimestamp());
+        //set projectId
+        //task.setProjectId(projectId);
         return taskJpaRepository.saveAndFlush(task);
     }
 
     public Task update(int projectId, int id, Task task) {
         getProject(projectId);
         get(id);
-        task.setId(id);
-        task.setCreation_date(projectServiceHelper.setCurrentTimestamp());
-        task.setModification_date(projectServiceHelper.setCurrentTimestamp());
+        //task.setId(id);
+        //task.setProjectId(projectId);
+        task.setCreation_date(Helper.setCurrentTimestamp());
+        task.setModification_date(Helper.setCurrentTimestamp());
         return taskJpaRepository.saveAndFlush(task);
     }
 

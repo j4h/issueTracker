@@ -32,9 +32,9 @@ public class SubTaskController {
     }
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
-    public String delete(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId,
+    public String delete(@PathVariable("taskId") int taskId,
                          @PathVariable("id") int id) {
-        subTaskService.delete(projectId, taskId, id);
+        subTaskService.delete(taskId, id);
         return "SubTask with ID:" + id+ " was successfully deleted";
     }
 

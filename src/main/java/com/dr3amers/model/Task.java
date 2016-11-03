@@ -1,9 +1,12 @@
 package com.dr3amers.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Task {
@@ -22,8 +25,12 @@ public class Task {
     private Timestamp creation_date;
     @Column(name = "modification_date")
     private Timestamp modification_date;
-
-    //private List<SubTask> subTaskList  = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name = "task_id")
+    private List<SubTask> subTaskList  = new ArrayList<>();
+    @JsonIgnore
+    @Column(name = "project_id")
+    private int projectId;
 
     public int getId() {
         return id;
@@ -80,5 +87,13 @@ public class Task {
     public void setModification_date(Timestamp modification_date) {
         this.modification_date = modification_date;
     }
+
+    public void setProjectId(int projectId) { this.projectId = projectId; }
+
+    public int getProjectId() { return projectId; }
+
+    public List<SubTask> getSubTaskList() { return subTaskList; }
+
+    public void setSubTaskList(List<SubTask> subTaskList) { this.subTaskList = subTaskList; }
 
 }

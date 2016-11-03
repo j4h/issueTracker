@@ -21,8 +21,8 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public Task create(@RequestBody Task task) {
-        return taskService.create(task);
+    public Task create(@PathVariable("projectId") int projectId, @RequestBody Task task) {
+        return taskService.create(projectId, task);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
