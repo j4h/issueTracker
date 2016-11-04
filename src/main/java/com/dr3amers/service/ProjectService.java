@@ -1,7 +1,6 @@
 package com.dr3amers.service;
 
 import com.dr3amers.exception.NotFoundException;
-import com.dr3amers.helper.Helper;
 import com.dr3amers.model.Project;
 import com.dr3amers.repository.ProjectJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +11,15 @@ import java.util.List;
 @Service
 public class ProjectService {
 
+    @Autowired
     private ProjectJpaRepository projectJpaRepository;
 
-    @Autowired
-    public ProjectService(ProjectJpaRepository projectJpaRepository) {
-        this.projectJpaRepository = projectJpaRepository;
-    }
-
     public Project create(Project project) {
-        //set creation_time in the object model
-        project.setCreation_date(Helper.setCurrentTimestamp());
         return projectJpaRepository.saveAndFlush(project);
     }
 
     public Project update(int id, Project project) {
         get(id);
-        project.setId(id);
         return projectJpaRepository.saveAndFlush(project);
     }
 
@@ -36,7 +28,7 @@ public class ProjectService {
         if (project == null) {
             throw new NotFoundException(id);
         }
-        return projectJpaRepository.findOne(id);
+        return project;
     }
 
     public void delete(int id) {

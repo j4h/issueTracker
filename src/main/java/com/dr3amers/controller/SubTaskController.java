@@ -12,12 +12,8 @@ import java.util.List;
 @RequestMapping(value = "/projects/{projectId}/tasks/{taskId}/subtasks")
 public class SubTaskController {
 
-    private SubTaskService subTaskService;
-
     @Autowired
-    public SubTaskController(SubTaskService subTaskService) {
-        this.subTaskService = subTaskService;
-    }
+    private SubTaskService subTaskService;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
@@ -32,11 +28,25 @@ public class SubTaskController {
         return subTaskService.get(projectId,taskId,id);
     }
 
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public String delete(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId,
                          @PathVariable("id") int id) {
         subTaskService.delete(projectId, taskId, id);
         return "SubTask with ID:" + id+ " was successfully deleted";
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public SubTask create(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId,
+                          @RequestBody SubTask subtask) {
+        return subTaskService.create(projectId, taskId, subtask);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(value = HttpStatus.OK)
+    public SubTask update(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId,
+                          @PathVariable("id") int id, @RequestBody SubTask subtask) {
+        return subTaskService.update(projectId, taskId, id, subtask);
     }
 
 }

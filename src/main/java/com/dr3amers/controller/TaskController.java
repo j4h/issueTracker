@@ -12,12 +12,8 @@ import java.util.List;
 @RequestMapping(value = "/projects/{projectId}/tasks")
 public class TaskController {
 
-    private TaskService taskService;
-
     @Autowired
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
-    }
+    private TaskService taskService;
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -41,7 +37,7 @@ public class TaskController {
         return taskService.update(projectId, id, task);
     }
 
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public String delete(@PathVariable("projectId") int projectId, @PathVariable("id") int id) {
         taskService.delete(projectId, id);
         return "Task with ID:" + id+ " was successfully deleted";

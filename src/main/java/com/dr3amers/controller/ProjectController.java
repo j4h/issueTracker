@@ -12,12 +12,8 @@ import java.util.List;
 @RequestMapping(value = "/projects")
 public class ProjectController {
 
-    private ProjectService projectService;
-
     @Autowired
-    public ProjectController (ProjectService projectService) {
-        this.projectService = projectService;
-    }
+    private ProjectService projectService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -43,7 +39,7 @@ public class ProjectController {
         return projectService.create(project);
     }
 
-    @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     public Project update(@PathVariable("id") int id, @RequestBody Project project) {
         return projectService.update(id, project);
