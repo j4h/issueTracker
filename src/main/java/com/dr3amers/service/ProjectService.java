@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 public class ProjectService {
 
+    //DOES IT MAKE SENSE TO MAKE ON REPOSITORIES FINAL
     @Autowired
     private ProjectJpaRepository projectJpaRepository;
 

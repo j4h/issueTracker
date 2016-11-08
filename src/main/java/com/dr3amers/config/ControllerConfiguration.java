@@ -18,12 +18,6 @@ import java.util.stream.Collectors;
 @ControllerAdvice(annotations = RestController.class)
 public class ControllerConfiguration {
 
-    @ExceptionHandler(value = NotFoundException.class)
-    @ResponseBody
-    private ResponseEntity<String> notFound(NotFoundException n) {
-
-        return new ResponseEntity<>(n.toString(), HttpStatus.NOT_FOUND);
-    }
 
     @ExceptionHandler(value = DataIntegrityViolationException.class)
     @ResponseBody

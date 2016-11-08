@@ -37,9 +37,8 @@ public class SubTaskService {
 
     public SubTask create(int projectId, int taskId, SubTask subTask) {
         Helper.getTaskByIdFromProject(projectJpaRepository, projectId, taskId);
-        //set creation_time in the object model
-        subTask.setCreation_date(Helper.setCurrentTimestamp());
-        //set projectId
+
+        //fake code won't be released
         subTask.setTaskId(taskId);
         return subTaskJpaRepository.saveAndFlush(subTask);
     }
@@ -47,10 +46,8 @@ public class SubTaskService {
     public SubTask update(int projectId, int taskId, int id, SubTask subTask) {
         Helper.getSubTaskByIdFromTask(projectJpaRepository, projectId, taskId, id);
 
-        //this code won't be released
-        subTask.setId(id);
+        //fake code won't be released
         subTask.setTaskId(taskId);
-        subTask.setModification_date(Helper.setCurrentTimestamp());
         return subTaskJpaRepository.saveAndFlush(subTask);
     }
 

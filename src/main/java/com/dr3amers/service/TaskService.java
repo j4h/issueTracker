@@ -39,19 +39,17 @@ public class TaskService {
         //??how can we know that creation comes from current or accessible project
         Helper.getProjectById(projectJpaRepository, projectId);
 
-        //this is fake code that won't be released
+        //fake code that won't be released
         task.setProjectId(projectId);
         return taskJpaRepository.saveAndFlush(task);
     }
 
     public Task update(int projectId, int id, Task task) {
         //validation process
-        Helper.getTaskByIdFromProject(projectJpaRepository, projectId, id);
+        Helper.checkStatusUpdateValidity(projectJpaRepository, projectId, id, task);
 
-        task.setId(id);
+        //fake code that won't be released
         task.setProjectId(projectId);
-        task.setCreation_date(Helper.setOldCreationDate(task, taskJpaRepository));
-        task.setModification_date(Helper.setCurrentTimestamp());
         return taskJpaRepository.saveAndFlush(task);
     }
 

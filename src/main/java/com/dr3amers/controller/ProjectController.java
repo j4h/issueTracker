@@ -28,6 +28,7 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
     public String delete(@PathVariable("id") int id) {
         projectService.delete(id);
         return "Project with ID:" + id+ " was successfully deleted";

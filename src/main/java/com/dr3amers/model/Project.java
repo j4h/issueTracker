@@ -18,12 +18,14 @@ public class Project {
     private String name;
     @Column(name = "description")
     private String description;
-    //private User creator;
     @Column(name = "creation_date")
     private Timestamp creation_date;
     @OneToMany
     @JoinColumn(name = "project_id")
     private List<Task> tasks = new ArrayList<>();
+
+    @ManyToOne
+    private User creator;
 
     public String getName() {
         return name;
@@ -48,14 +50,14 @@ public class Project {
     public void setDescription(String description) {
         this.description = description;
     }
-/*
+
     public User getCreator() {
         return creator;
     }
 
     public void setCreator(User creator) {
         this.creator = creator;
-    }*/
+    }
 
     public Timestamp getCreation_date() {
         return creation_date;

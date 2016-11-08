@@ -1,5 +1,6 @@
 package com.dr3amers.model;
 
+import com.dr3amers.model.enumerated.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -19,15 +20,22 @@ public class Task {
     private String name;
     @Column(name = "description")
     private String description;
-    //private User creator;
-    //private User implementer;
+
+    @ManyToOne
+    private User creator;
+    @ManyToOne
+    private User assignee;
     @Column(name = "creation_date")
     private Timestamp creation_date;
     @Column(name = "modification_date")
     private Timestamp modification_date;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @OneToMany
     @JoinColumn(name = "task_id")
     private List<SubTask> subTaskList  = new ArrayList<>();
+
     @JsonIgnore
     @Column(name = "project_id")
     private int projectId;
@@ -55,22 +63,14 @@ public class Task {
     public void setDescription(String description) {
         this.description = description;
     }
-/*
-    public User getCreator() {
-        return creator;
-    }
 
-    public void setCreator(User creator) {
-        this.creator = creator;
-    }
+    public User getCreator() { return creator; }
 
-    public User getImplementer() {
-        return implementer;
-    }
+    public void setCreator(User creator) { this.creator = creator; }
 
-    public void setImplementer(User implementer) {
-        this.implementer = implementer;
-    }*/
+    public User getAssignee() { return assignee; }
+
+    public void setAssignee(User assignee) { this.assignee = assignee; }
 
     public Timestamp getCreation_date() {
         return creation_date;
@@ -95,5 +95,9 @@ public class Task {
     public List<SubTask> getSubTaskList() { return subTaskList; }
 
     public void setSubTaskList(List<SubTask> subTaskList) { this.subTaskList = subTaskList; }
+
+    public Status getStatus() { return status; }
+
+    public void setStatus(Status status) { this.status = status; }
 
 }

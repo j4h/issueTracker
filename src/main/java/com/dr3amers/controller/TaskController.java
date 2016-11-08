@@ -38,6 +38,7 @@ public class TaskController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.OK)
     public String delete(@PathVariable("projectId") int projectId, @PathVariable("id") int id) {
         taskService.delete(projectId, id);
         return "Task with ID:" + id+ " was successfully deleted";

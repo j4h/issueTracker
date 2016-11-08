@@ -1,5 +1,6 @@
 package com.dr3amers.model;
 
+import com.dr3amers.model.enumerated.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -24,6 +25,9 @@ public class SubTask {
     @Column(name = "task_id")
     @JsonIgnore
     private int taskId;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     public int getId() {
         return id;
@@ -60,5 +64,9 @@ public class SubTask {
     public int getTaskId() { return taskId; }
 
     public void setTaskId(int taskId) { this.taskId = taskId; }
+
+    public Status getStatus() { return status; }
+
+    public void setStatus(Status status) { this.status = status; }
 
 }
