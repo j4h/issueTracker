@@ -1,8 +1,5 @@
 package com.dr3amers.exception;
 
-/**
- * Created by j4 on 07.11.16.
- */
 public class EmailExistsException extends RuntimeException {
 
     public EmailExistsException(String email) {

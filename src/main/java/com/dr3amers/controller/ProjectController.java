@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/projects")
@@ -27,6 +29,7 @@ public class ProjectController {
         return projectService.getAll();
     }
 
+    //TODO we need ResponseEntity<> here.
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.OK)
     public String delete(@PathVariable("id") int id) {
@@ -36,7 +39,7 @@ public class ProjectController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public Project create(@RequestBody Project project) {
+    public Project create(@RequestBody @Valid Project project) {
         return projectService.create(project);
     }
 

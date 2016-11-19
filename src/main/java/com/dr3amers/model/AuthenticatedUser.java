@@ -5,31 +5,18 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
-public class AuthenticatedUser implements UserDetails {
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    private int id;
-    private String nickname;
-    private String email;
-    private String name;
-    private String surname;
-    private String password;
-
+public class AuthenticatedUser extends User implements UserDetails {
 
     public AuthenticatedUser(User user) {
-        this.id = user.getId();
-        this.email = user.getEmail();
-        this.name = user.getName();
-        this.surname = user.getSurname();
-        this.nickname = user.getNickname();
-        this.password = user.getPassword();
+        super.setId(user.getId());
+        super.setEmail(user.getEmail());
+        super.setName(user.getName());
+        super.setSurname(user.getSurname());
+        super.setNickname(user.getNickname());
+        super.setPassword(user.getPassword());
+        super.setProjects(user.getProjects());
     }
 
     @Override
@@ -39,12 +26,12 @@ public class AuthenticatedUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return super.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return nickname;
+        return super.getNickname();
     }
 
     @Override

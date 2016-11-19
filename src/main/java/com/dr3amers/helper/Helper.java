@@ -6,12 +6,14 @@ import com.dr3amers.model.*;
 import com.dr3amers.model.enumerated.Status;
 import com.dr3amers.repository.ProjectJpaRepository;
 import com.dr3amers.repository.TaskJpaRepository;
+import com.sun.istack.internal.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 public class Helper {
 
@@ -20,7 +22,23 @@ public class Helper {
         return (AuthenticatedUser) auth.getPrincipal();
     }
 
+    //TODO need to change logic little bit, we can throw 2 different exceptions here 403, 404
+    public static Task checkGetTaskRequestValidity(ProjectJpaRepository projectJpaRepository,
+                                                   int projectId, int taskId) throws RuntimeException {
+        AuthenticatedUser user = getCurrentUser();
+        Task task = getTaskByIdFromProject(projectJpaRepository, projectId, taskId);
 
+        for (Project project:user.getProjects()) {
+            if (project.getId() == task.getProject().getId()) {
+                return task;
+            }
+            else throw new NotFoundException(projectId, taskId);
+        }
+        //this is just redundancy of java, null won't be returned
+        return null;
+    }
+
+    //rule for changing status
     public static Task checkStatusUpdateValidity(ProjectJpaRepository projectJpaRepository, int projectId,
                                                  int taskId, Task task) throws RuntimeException {
 
@@ -33,6 +51,7 @@ public class Helper {
 
     public static Project getProjectById(ProjectJpaRepository projectJpaRepository, int id)
             throws RuntimeException {
+
         Project project = projectJpaRepository.findOne(id);
         if (project == null) {
             throw new NotFoundException(id);
@@ -42,7 +61,8 @@ public class Helper {
 
     public static Task getTaskByIdFromProject(ProjectJpaRepository projectJpaRepository, int projectId, int taskId)
         throws RuntimeException {
-        List<Task> tasks = projectJpaRepository.findOne(projectId).getTasks();
+
+        Set<Task> tasks = projectJpaRepository.findOne(projectId).getTasks();
         for (Task task:tasks) {
             if (task.getId() == taskId){
                 return task;
@@ -53,7 +73,8 @@ public class Helper {
 
     public static SubTask getSubTaskByIdFromTask(ProjectJpaRepository projectJpaRepository, int projectId, int taskId, int subTaskId)
         throws RuntimeException {
-        List<SubTask> subTasks = getTaskByIdFromProject(projectJpaRepository,projectId,taskId).getSubTaskList();
+
+        Set<SubTask> subTasks = getTaskByIdFromProject(projectJpaRepository,projectId,taskId).getSubTaskList();
         for (SubTask subtask:subTasks) {
             if (subtask.getId() == subTaskId){
                 return subtask;

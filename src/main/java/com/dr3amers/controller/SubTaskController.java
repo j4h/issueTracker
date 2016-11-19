@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/projects/{projectId}/tasks/{taskId}/subtasks")
@@ -17,7 +18,7 @@ public class SubTaskController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public List<SubTask> getAll(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId) {
+    public Set<SubTask> getAll(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId) {
         return subTaskService.getAll(projectId,taskId);
     }
 

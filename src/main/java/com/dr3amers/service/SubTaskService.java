@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class SubTaskService {
@@ -22,7 +23,7 @@ public class SubTaskService {
         this.projectJpaRepository = projectJpaRepository;
     }
 
-    public List<SubTask> getAll(int projectId, int taskId) {
+    public Set<SubTask> getAll(int projectId, int taskId) {
         return Helper.getTaskByIdFromProject(projectJpaRepository,projectId,taskId).getSubTaskList();
     }
 

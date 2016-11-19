@@ -22,7 +22,13 @@ public class SubTask {
     private Timestamp creation_date;
     @Column(name = "modification_date")
     private Timestamp modification_date;
-    @Column(name = "task_id")
+
+    @ManyToOne
+    @JsonIgnore
+    private Task task;
+
+    //fake field that won't be released
+    @Column(name = "task_id", insertable = false, updatable =  false)
     @JsonIgnore
     private int taskId;
 
@@ -68,5 +74,13 @@ public class SubTask {
     public Status getStatus() { return status; }
 
     public void setStatus(Status status) { this.status = status; }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
 
 }

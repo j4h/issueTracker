@@ -7,7 +7,7 @@ import com.dr3amers.repository.TaskJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Set;
 
 @Service
 public class TaskService {
@@ -21,12 +21,13 @@ public class TaskService {
         this.projectJpaRepository = projectJpaRepository;
     }
 
-    public List<Task> getAll(int projectId) {
+    public Set<Task> getAll(int projectId) {
         return Helper.getProjectById(projectJpaRepository,projectId).getTasks();
     }
 
     public Task get(int projectId, int id) {
-        return Helper.getTaskByIdFromProject(projectJpaRepository,projectId,id);
+        return Helper.checkGetTaskRequestValidity(projectJpaRepository,
+                projectId, id);
     }
 
     public void delete(int projectId, int id) {

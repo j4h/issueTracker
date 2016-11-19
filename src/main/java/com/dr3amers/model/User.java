@@ -3,6 +3,7 @@ package com.dr3amers.model;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,9 +20,11 @@ public class User {
     private String surname;
     private String password;
 
-    /*@OneToMany
-    @JoinColumn(name = "assignee_id")
-    private List<Project> projectList;*/
+    //we fetch here projects which user has been assigned
+    @ManyToMany(targetEntity = Project.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "project_user", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"))
+    private List<Project> projects = new ArrayList<>();
 
     public int getId() { return id; }
 
@@ -67,6 +70,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
     }
 
 }

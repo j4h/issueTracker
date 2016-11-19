@@ -1,11 +1,14 @@
 package com.dr3amers.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Project {
@@ -20,12 +23,17 @@ public class Project {
     private String description;
     @Column(name = "creation_date")
     private Timestamp creation_date;
-    @OneToMany
-    @JoinColumn(name = "project_id")
-    private List<Task> tasks = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id")
+    private Set<Task> tasks = new HashSet<>();
     @ManyToOne
+    @JsonIgnore
     private User creator;
+
+    @ManyToMany(mappedBy = "projects")
+    @JsonIgnore
+    private Set<User> assignees = new HashSet<>();
 
     public String getName() {
         return name;
@@ -67,12 +75,20 @@ public class Project {
         this.creation_date = creation_date;
     }
 
-    public List<Task> getTasks() {
+    public Set<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public Set<User> getAssignees() {
+        return assignees;
+    }
+
+    public void setAssignees(Set<User> assignees) {
+        this.assignees = assignees;
     }
 
 }

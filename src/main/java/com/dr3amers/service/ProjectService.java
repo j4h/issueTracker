@@ -1,17 +1,21 @@
 package com.dr3amers.service;
 
 import com.dr3amers.exception.NotFoundException;
+import com.dr3amers.helper.Helper;
+import com.dr3amers.model.AuthenticatedUser;
 import com.dr3amers.model.Project;
+import com.dr3amers.model.User;
 import com.dr3amers.repository.ProjectJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProjectService {
 
-    //DOES IT MAKE SENSE TO MAKE ON REPOSITORIES FINAL
+    //SHOULD WE MAKE REPOSITORIES FINAL?
     @Autowired
     private ProjectJpaRepository projectJpaRepository;
 
@@ -29,6 +33,8 @@ public class ProjectService {
         if (project == null) {
             throw new NotFoundException(id);
         }
+        List<Project> projects = getAll();
+        System.out.println(projects.contains(project));
         return project;
     }
 
@@ -38,6 +44,6 @@ public class ProjectService {
     }
 
     public List<Project> getAll() {
-        return projectJpaRepository.findAll();
+        return Helper.getCurrentUser().getProjects();
     }
 }

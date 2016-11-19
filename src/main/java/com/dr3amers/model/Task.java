@@ -7,7 +7,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Task {
@@ -20,24 +22,29 @@ public class Task {
     private String name;
     @Column(name = "description")
     private String description;
-
-    @ManyToOne
-    private User creator;
-    @ManyToOne
-    private User assignee;
     @Column(name = "creation_date")
     private Timestamp creation_date;
     @Column(name = "modification_date")
     private Timestamp modification_date;
-
     @Enumerated(EnumType.STRING)
     private Status status;
-    @OneToMany
-    @JoinColumn(name = "task_id")
-    private List<SubTask> subTaskList  = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "task_id")
+    private Set<SubTask> subTaskList  = new HashSet<>();
+    @ManyToOne
     @JsonIgnore
-    @Column(name = "project_id")
+    private Project project;
+    @ManyToOne
+    @JsonIgnore
+    private User creator;
+    @ManyToOne
+    @JsonIgnore
+    private User assignee;
+
+    //this is fake field that want be released
+    @JsonIgnore
+    @Column(name = "project_id", insertable = false, updatable =  false)
     private int projectId;
 
     public int getId() {
@@ -92,12 +99,20 @@ public class Task {
 
     public int getProjectId() { return projectId; }
 
-    public List<SubTask> getSubTaskList() { return subTaskList; }
+    public Set<SubTask> getSubTaskList() { return subTaskList; }
 
-    public void setSubTaskList(List<SubTask> subTaskList) { this.subTaskList = subTaskList; }
+    public void setSubTaskList(Set<SubTask> subTaskList) { this.subTaskList = subTaskList; }
 
     public Status getStatus() { return status; }
 
     public void setStatus(Status status) { this.status = status; }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
 }
