@@ -11,5 +11,4 @@ public class InvalidStatusUpdateException extends RuntimeException {
     public String toString(){
         return this.getMessage() +"\n" + getClass();
     }
-
 }

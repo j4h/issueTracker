@@ -6,9 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,26 +24,19 @@ public class Task {
     private Timestamp creation_date;
     @Column(name = "modification_date")
     private Timestamp modification_date;
+    @Column(name = "project_id")
+    private int projectId;
+    @Column(name = "creator_id")
+    private int creatorId;
+    @Column(name = "assignee_id")
+    private int assigneeId;
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
-    private Set<SubTask> subTaskList  = new HashSet<>();
-    @ManyToOne
-    @JsonIgnore
-    private Project project;
-    @ManyToOne
-    @JsonIgnore
-    private User creator;
-    @ManyToOne
-    @JsonIgnore
-    private User assignee;
-
-    //this is fake field that want be released
-    @JsonIgnore
-    @Column(name = "project_id", insertable = false, updatable =  false)
-    private int projectId;
+    private Set<SubTask> subTaskList;
 
     public int getId() {
         return id;
@@ -71,13 +62,13 @@ public class Task {
         this.description = description;
     }
 
-    public User getCreator() { return creator; }
+    public int getCreatorId() { return creatorId; }
 
-    public void setCreator(User creator) { this.creator = creator; }
+    public void setCreatorId(int creatorId) { this.creatorId = creatorId; }
 
-    public User getAssignee() { return assignee; }
+    public int getAssigneeId() { return assigneeId; }
 
-    public void setAssignee(User assignee) { this.assignee = assignee; }
+    public void setAssigneeId(int assigneeId) { this.assigneeId = assigneeId; }
 
     public Timestamp getCreation_date() {
         return creation_date;
@@ -106,13 +97,5 @@ public class Task {
     public Status getStatus() { return status; }
 
     public void setStatus(Status status) { this.status = status; }
-
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
 
 }

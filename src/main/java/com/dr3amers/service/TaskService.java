@@ -5,6 +5,7 @@ import com.dr3amers.model.Task;
 import com.dr3amers.repository.ProjectJpaRepository;
 import com.dr3amers.repository.TaskJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -25,19 +26,16 @@ public class TaskService {
         return Helper.getProjectById(projectJpaRepository,projectId).getTasks();
     }
 
-    public Task get(int projectId, int id) {
-        return Helper.checkGetTaskRequestValidity(projectJpaRepository,
-                projectId, id);
+    public Task get(int projectId, int taskId) {
+        return Helper.getTaskById(projectJpaRepository, taskJpaRepository, projectId, taskId);
     }
 
-    public void delete(int projectId, int id) {
-        Helper.getTaskByIdFromProject(projectJpaRepository, projectId, id);
-        taskJpaRepository.delete(id);
+    public void delete(int projectId, int taskId) {
+        get(projectId, taskId);
+        taskJpaRepository.delete(taskId);
     }
 
     public Task create(int projectId, Task task) {
-
-        //??how can we know that creation comes from current or accessible project
         Helper.getProjectById(projectJpaRepository, projectId);
 
         //fake code that won't be released
@@ -47,7 +45,7 @@ public class TaskService {
 
     public Task update(int projectId, int id, Task task) {
         //validation process
-        Helper.checkStatusUpdateValidity(projectJpaRepository, projectId, id, task);
+        Helper.checkStatusUpdateValidity(projectJpaRepository, taskJpaRepository, projectId, id, task);
 
         //fake code that won't be released
         task.setProjectId(projectId);

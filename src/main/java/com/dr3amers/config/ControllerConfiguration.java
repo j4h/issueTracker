@@ -1,6 +1,5 @@
 package com.dr3amers.config;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMsg;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,29 +22,12 @@ import java.util.stream.Collectors;
 @ControllerAdvice(annotations = RestController.class)
 public class ControllerConfiguration extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(value = NotFoundException.class)
-    @ResponseBody
-    private ResponseEntity<Object> notFound(NotFoundException n, WebRequest request) {
-
-        return super.handleException(n,request);
-
-    }
-
-    @ExceptionHandler(value = UsernameNotFoundException.class)
-    @ResponseBody
-    private ResponseEntity<String> usernameNotFound(UsernameNotFoundException n) {
-
-        return new ResponseEntity<>(n.getMessage(), HttpStatus.NOT_FOUND);
-    }
-
-
-
-    @ExceptionHandler(value = DataIntegrityViolationException.class)
+    /*@ExceptionHandler(value = DataIntegrityViolationException.class)
     @ResponseBody
     private ResponseEntity<String> SQLError(DataIntegrityViolationException n) {
 
         return new ResponseEntity<>(n.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+    }*/
 
     @ExceptionHandler(ConstraintViolationException.class)
     private ResponseEntity<Set<String>> handleConstraintViolation(ConstraintViolationException e) {

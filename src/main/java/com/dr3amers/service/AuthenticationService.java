@@ -37,18 +37,14 @@ public class AuthenticationService implements UserDetailsService {
 
     public AuthenticatedUser registerNewAccount(User user) throws EmailExistsException {
 
-        //TODO finish registration code
-
-        //email validation need
-
-        if (userJpaRepository.saveAndFlush(user)!= null) {
+        if (user != null) {
+            userJpaRepository.saveAndFlush(user);
             AuthenticatedUser authenticatedUser = new AuthenticatedUser(user);
             Authentication authentication = new UsernamePasswordAuthenticationToken(authenticatedUser, null,
                     new ArrayList<>());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return authenticatedUser;
         }
-
         return null;
     }
 }

@@ -5,9 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,17 +21,16 @@ public class Project {
     private String description;
     @Column(name = "creation_date")
     private Timestamp creation_date;
+    @Column(name = "creator_id")
+    private int creatorId;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
-    private Set<Task> tasks = new HashSet<>();
-    @ManyToOne
-    @JsonIgnore
-    private User creator;
+    private Set<Task> tasks;
 
     @ManyToMany(mappedBy = "projects")
     @JsonIgnore
-    private Set<User> assignees = new HashSet<>();
+    private Set<User> assignees;
 
     public String getName() {
         return name;
@@ -59,12 +56,12 @@ public class Project {
         this.description = description;
     }
 
-    public User getCreator() {
-        return creator;
+    public int getCreatorId() {
+        return creatorId;
     }
 
-    public void setCreator(User creator) {
-        this.creator = creator;
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
     }
 
     public Timestamp getCreation_date() {
