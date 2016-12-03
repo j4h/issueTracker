@@ -20,10 +20,12 @@ import java.util.ArrayList;
 public class AuthenticationService implements UserDetailsService {
 
     private UserJpaRepository userJpaRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthenticationService(UserJpaRepository userJpaRepository) {
+    public AuthenticationService(UserJpaRepository userJpaRepository, PasswordEncoder passwordEncoder) {
         this.userJpaRepository = userJpaRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -38,6 +40,7 @@ public class AuthenticationService implements UserDetailsService {
     public AuthenticatedUser registerNewAccount(User user) throws EmailExistsException {
 
         if (user != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             userJpaRepository.saveAndFlush(user);
             AuthenticatedUser authenticatedUser = new AuthenticatedUser(user);
             Authentication authentication = new UsernamePasswordAuthenticationToken(authenticatedUser, null,

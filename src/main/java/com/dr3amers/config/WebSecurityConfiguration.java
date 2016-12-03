@@ -1,12 +1,14 @@
 package com.dr3amers.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -15,9 +17,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder,
-                                UserDetailsService userDetailsService)
+                                UserDetailsService userDetailsService, PasswordEncoder passwordEncoder)
             throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService);
+        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -25,7 +27,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.
             authorizeRequests()
-                .antMatchers("/resources/**, /register").permitAll()
+                .antMatchers("/resources/**, /account/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
@@ -33,6 +35,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/projects", true)
                 .and()
             .logout()
+                .logoutUrl("/account/logout")
                 .permitAll();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
