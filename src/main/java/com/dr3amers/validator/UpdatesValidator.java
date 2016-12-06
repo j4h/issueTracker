@@ -1,6 +1,7 @@
-package com.dr3amers.helper;
+package com.dr3amers.validator;
 
 import com.dr3amers.exception.InvalidStatusUpdateException;
+import com.dr3amers.helper.Helper;
 import com.dr3amers.model.SubTask;
 import com.dr3amers.model.Task;
 import com.dr3amers.model.enumerated.Status;
