@@ -8,6 +8,10 @@ public class InvalidStatusUpdateException extends RuntimeException {
         super("You can't reach status "+ updatedStatus.name()+ " from "+ initialStatus.name());
     }
 
+    public InvalidStatusUpdateException(String msg) {
+        super(msg);
+    }
+
     public String toString(){
         return this.getMessage() +"\n" + getClass();
     }

@@ -1,13 +1,11 @@
 package com.dr3amers.model;
 
 import com.dr3amers.model.enumerated.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 public class Task {
@@ -36,7 +34,7 @@ public class Task {
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
-    private Set<SubTask> subTaskList;
+    private List<SubTask> subTaskList;
 
     public int getId() {
         return id;
@@ -90,9 +88,9 @@ public class Task {
 
     public int getProjectId() { return projectId; }
 
-    public Set<SubTask> getSubTaskList() { return subTaskList; }
+    public List<SubTask> getSubTaskList() { return subTaskList; }
 
-    public void setSubTaskList(Set<SubTask> subTaskList) { this.subTaskList = subTaskList; }
+    public void setSubTaskList(List<SubTask> subTaskList) { this.subTaskList = subTaskList; }
 
     public Status getStatus() { return status; }
 

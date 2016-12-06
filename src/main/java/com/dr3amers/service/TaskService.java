@@ -1,13 +1,14 @@
 package com.dr3amers.service;
 
 import com.dr3amers.helper.Helper;
+import com.dr3amers.helper.UpdatesValidator;
 import com.dr3amers.model.Task;
 import com.dr3amers.repository.ProjectJpaRepository;
 import com.dr3amers.repository.TaskJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 public class TaskService {
@@ -21,8 +22,12 @@ public class TaskService {
         this.projectJpaRepository = projectJpaRepository;
     }
 
-    public Set<Task> getAll(int projectId) {
-        return Helper.getProjectById(projectJpaRepository,projectId).getTasks();
+    public List<Task> getAll(int projectId) {
+        //validation if the project exists and we can access it
+        Helper.getProjectById(projectJpaRepository,projectId);
+        List<Task> tasks = taskJpaRepository.findByProjectId(projectId);
+        tasks.removeIf(task -> task.getAssigneeId() != Helper.getCurrentUser().getId());
+        return tasks;
     }
 
     public Task get(int projectId, int taskId) {
@@ -42,9 +47,9 @@ public class TaskService {
         return taskJpaRepository.saveAndFlush(task);
     }
 
-    public Task update(int projectId, int id, Task task) {
+    public Task update(int projectId, int taskId, Task task) {
         //validation process
-        Helper.checkStatusUpdateValidity(projectJpaRepository, taskJpaRepository, projectId, id, task);
+        UpdatesValidator.checkTaskStatusUpdateValidity(projectJpaRepository, taskJpaRepository, projectId, taskId, task);
 
         //fake code that won't be released
         task.setProjectId(projectId);

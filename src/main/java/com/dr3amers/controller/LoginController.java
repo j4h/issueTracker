@@ -37,21 +37,21 @@ public class LoginController {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         //TODO redirect to login page
-        return new ResponseEntity<>("Вы сходили нахуй успешно. Поздраляю!", HttpStatus.OK);
+        return new ResponseEntity<>("Success!", HttpStatus.OK);
     }
 
     @RequestMapping(value="/register", method = RequestMethod.GET)
     public ModelAndView register() {
         ModelAndView model = new ModelAndView("register");
-        model.addObject("title", "Admministrator Control Panel");
+        model.addObject("title", "Registration");
         model.addObject("message", "This page demonstrates how to use Spring security.");
 
         return model;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public AuthenticatedUser registerNewAccount(User user){
+    public AuthenticatedUser registerNewAccount(@Valid User user){
         return authenticationService.registerNewAccount(user);
     }
 

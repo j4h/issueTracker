@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,14 +19,15 @@ public class Project {
     private String name;
     @Column(name = "description")
     private String description;
-    @Column(name = "creation_date")
-    private Timestamp creation_date;
+    @Column(name = "creationDate")
+    private Timestamp creationDate;
+    //todo QUESTION: "should we have this column in JSON or replace it with JsonIgnore Object User?
     @Column(name = "creator_id")
     private int creatorId;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
-    private Set<Task> tasks;
+    private List<Task> tasks;
 
     @ManyToMany(mappedBy = "projects")
     @JsonIgnore
@@ -64,19 +65,19 @@ public class Project {
         this.creatorId = creatorId;
     }
 
-    public Timestamp getCreation_date() {
-        return creation_date;
+    public Timestamp getCreationDate() {
+        return creationDate;
     }
 
-    public void setCreation_date(Timestamp creation_date) {
-        this.creation_date = creation_date;
+    public void setCreationDate(Timestamp creationDate) {
+        this.creationDate = creationDate;
     }
 
-    public Set<Task> getTasks() {
+    public List<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Set<Task> tasks) {
+    public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
 
