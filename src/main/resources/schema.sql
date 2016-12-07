@@ -1,71 +1,80 @@
-CREATE TABLE issueTracker.user
+CREATE TABLE PUBLIC.USER
 (
-    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    id INT PRIMARY KEY NOT NULL IDENTITY,
     nickname VARCHAR(35) NOT NULL,
-    name VARCHAR(35) NOT NULL,
-    surname VARCHAR(50) NOT NULL,
-    email VARCHAR(70) NOT NULL,
-    password VARCHAR(100) NOT NULL
+    name VARCHAR(50) NOT NULL,
+    surname VARCHAR(70) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    password VARCHAR(255) NOT NULL
 );
-CREATE UNIQUE INDEX user_email_uindex ON issueTracker.user (email);
-CREATE UNIQUE INDEX user_id_uindex ON issueTracker.user (id);
-CREATE UNIQUE INDEX user_nickname_uindex ON issueTracker.user (nickname);
+CREATE UNIQUE INDEX "usr_id_uindex" ON PUBLIC.USER (id);
+CREATE UNIQUE INDEX "usr_nickname_uindex" ON PUBLIC.USER (nickname);
+CREATE UNIQUE INDEX "usr_email_uindex" ON PUBLIC.USER (email);
 
-CREATE TABLE issueTracker.project
+CREATE TABLE PUBLIC.PROJECT
 (
-    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(35) NOT NULL,
-    description TEXT,
-    creation_date TIMESTAMP NOT NULL,
-    creator_id INT(11) NOT NULL,
-    CONSTRAINT project_user_id_fk FOREIGN KEY (creator_id) REFERENCES user (id)
+  id INT PRIMARY KEY NOT NULL IDENTITY,
+  name VARCHAR(35) NOT NULL,
+  description VARCHAR(255),
+  creation_date TIMESTAMP DEFAULT current_timestamp NOT NULL,
+  creator_id INT NOT NULL
 );
-CREATE UNIQUE INDEX PROJECT_id_uindex ON issueTracker.project (id);
-CREATE UNIQUE INDEX project_name_uindex ON issueTracker.project (name);
-CREATE INDEX project_user_id_fk ON issueTracker.project (creator_id);
+CREATE UNIQUE INDEX "prjct_id_uindex" ON PUBLIC.PROJECT (id);
+CREATE UNIQUE INDEX "prjct_name_uindex" ON PUBLIC.PROJECT (name);
 
-CREATE TABLE issueTracker.task
+CREATE TABLE PUBLIC.TASK
 (
-    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(35) NOT NULL,
-    description TEXT,
-    creation_date TIMESTAMP DEFAULT 'CURRENT_TIMESTAMP' NOT NULL,
-    modification_date TIMESTAMP DEFAULT 'CURRENT_TIMESTAMP' NOT NULL,
-    project_id INT(11) NOT NULL,
-    status VARCHAR(25) NOT NULL,
-    creator_id INT(11) NOT NULL,
-    assignee_id INT(11) NOT NULL,
-    CONSTRAINT TASK_PROJECT_id_fk FOREIGN KEY (project_id) REFERENCES project (id),
-    CONSTRAINT task_user_assignee_id_fk FOREIGN KEY (assignee_id) REFERENCES user (id),
-    CONSTRAINT task_user_id_fk FOREIGN KEY (creator_id) REFERENCES user (id)
+  id INT PRIMARY KEY NOT NULL IDENTITY,
+  name VARCHAR(35) NOT NULL,
+  description VARCHAR(255),
+  creation_date TIMESTAMP DEFAULT current_timestamp,
+  modification_date TIMESTAMP DEFAULT current_timestamp,
+  project_id INT NOT NULL,
+  status VARCHAR(50) NOT NULL,
+  creator_id INT NOT NULL,
+  assignee_id INT NOT NULL
 );
-CREATE UNIQUE INDEX TASK_id_uindex ON issueTracker.task (id);
-CREATE INDEX TASK_PROJECT_id_fk ON issueTracker.task (project_id);
-CREATE INDEX task_user_assignee_id_fk ON issueTracker.task (assignee_id);
-CREATE INDEX task_user_id_fk ON issueTracker.task (creator_id);
+CREATE UNIQUE INDEX "tsk_id_uindex" ON PUBLIC.TASK (id);
+CREATE UNIQUE INDEX "tsk_name_uindex" ON PUBLIC.TASK (name);
 
-CREATE TABLE issueTracker.sub_task
+ALTER TABLE PUBLIC.TASK
+ADD CONSTRAINT TSK_PRJCT_ID_fk
+FOREIGN KEY (PROJECT_ID) REFERENCES PROJECT (ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE PUBLIC.TASK
+ADD CONSTRAINT TSK_USR_ID_fk
+FOREIGN KEY (CREATOR_ID) REFERENCES USER (ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE PUBLIC.TASK
+ADD CONSTRAINT TSK_USR_ASSIGNEE_ID_fk
+FOREIGN KEY (ASSIGNEE_ID) REFERENCES USER (ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE PUBLIC.SUB_TASK
 (
-    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(35) NOT NULL,
-    description TEXT,
-    creation_date TIMESTAMP DEFAULT 'CURRENT_TIMESTAMP' NOT NULL,
-    modification_date TIMESTAMP DEFAULT 'CURRENT_TIMESTAMP' NOT NULL,
-    task_id INT(11) NOT NULL,
-    status VARCHAR(25) NOT NULL,
-    CONSTRAINT subtask_task_id_fk FOREIGN KEY (task_id) REFERENCES task (id)
+  id INT PRIMARY KEY NOT NULL IDENTITY,
+  name VARCHAR(35) NOT NULL,
+  description VARCHAR(255),
+  creation_date TIMESTAMP DEFAULT current_timestamp,
+  modification_date TIMESTAMP DEFAULT current_timestamp,
+  task_id INT NOT NULL,
+  status VARCHAR(35) NOT NULL
 );
-CREATE UNIQUE INDEX SUBTASK_id_uindex ON issueTracker.sub_task (id);
-CREATE INDEX subtask_task_id_fk ON issueTracker.sub_task (task_id);
+CREATE UNIQUE INDEX "sbtsk_id_uindex" ON PUBLIC.SUB_TASK (id);
+CREATE UNIQUE INDEX "sbtsk_name_uindex" ON PUBLIC.SUB_TASK (name);
 
-CREATE TABLE issueTracker.project_user
+ALTER TABLE PUBLIC.SUB_TASK
+ADD CONSTRAINT SBTSK_TSK_ID_fk
+FOREIGN KEY (TASK_ID) REFERENCES TASK (ID) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE PUBLIC.project_user
 (
-    project_id INT(11) NOT NULL,
-    user_id INT(11) NOT NULL,
-    CONSTRAINT `PRIMARY` PRIMARY KEY (project_id, user_id),
-    CONSTRAINT fk_projectuser_project FOREIGN KEY (project_id) REFERENCES project (id),
-    CONSTRAINT fk_projectuser_user FOREIGN KEY (user_id) REFERENCES user (id)
+  project_id INT NOT NULL,
+  user_id INT NOT NULL
 );
-CREATE INDEX fk_projectuser_project ON issueTracker.project_user (project_id);
-CREATE INDEX fk_projectuser_user ON issueTracker.project_user (user_id);
-
+ALTER TABLE PUBLIC.project_user ADD CONSTRAINT P_U_PROJECT_ID_USER_ID_pk PRIMARY KEY (PROJECT_ID, USER_ID);
+ALTER TABLE PUBLIC.project_user
+ADD CONSTRAINT P_U_PRJCT_ID_fk
+FOREIGN KEY (PROJECT_ID) REFERENCES PROJECT (ID) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE PUBLIC.project_user
+ADD CONSTRAINT P_U_USR_ID_fk
+FOREIGN KEY (USER_ID) REFERENCES USER (ID) ON DELETE CASCADE ON UPDATE CASCADE;

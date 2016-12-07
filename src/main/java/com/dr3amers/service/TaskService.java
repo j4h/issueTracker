@@ -1,7 +1,7 @@
 package com.dr3amers.service;
 
 import com.dr3amers.helper.Helper;
-import com.dr3amers.helper.UpdatesValidator;
+import com.dr3amers.validator.UpdatesValidator;
 import com.dr3amers.model.Task;
 import com.dr3amers.repository.ProjectJpaRepository;
 import com.dr3amers.repository.TaskJpaRepository;

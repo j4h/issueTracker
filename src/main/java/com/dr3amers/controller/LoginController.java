@@ -40,6 +40,7 @@ public class LoginController {
         return new ResponseEntity<>("Success!", HttpStatus.OK);
     }
 
+    //TODO registration process not actually tested
     @RequestMapping(value="/register", method = RequestMethod.GET)
     public ModelAndView register() {
         ModelAndView model = new ModelAndView("register");
