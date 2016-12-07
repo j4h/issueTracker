@@ -1,1 +1,1 @@
-# issueTracker, there will appear a description of the API
+There will appear a description of the API soon.
