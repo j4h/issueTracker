@@ -1,6 +1,6 @@
 package com.dr3amers.model.enumerated;
 
-//status for tasks and subtasks
+//status for Tasks and SubTasks
 public enum Status {
     TODO, INPROGRESS, DONE
 }

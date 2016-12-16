@@ -5,8 +5,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
+//TODO add Roles and figure out where to get booleans
 public class AuthenticatedUser extends User implements UserDetails {
 
     public AuthenticatedUser(User user) {

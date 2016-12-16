@@ -2,7 +2,10 @@ package com.dr3amers.model;
 
 import com.dr3amers.model.enumerated.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -19,6 +22,8 @@ public class SubTask {
     @Column(name = "description")
     private String description;
     @Column(name = "creation_date")
+    @CreatedDate
+    @Generated(GenerationTime.INSERT)
     private Timestamp creation_date;
     @Column(name = "modification_date")
     private Timestamp modification_date;

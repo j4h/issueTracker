@@ -10,10 +10,11 @@ import com.dr3amers.repository.TaskJpaRepository;
 
 import java.util.List;
 
+//Validation rules for Status updates
 public class UpdatesValidator {
 
 
-    //rules updating Task's Status
+    //rules updating Status for Tasks
     public static Task checkTaskStatusUpdateValidity(ProjectJpaRepository projectJpaRepository, TaskJpaRepository taskJpaRepository,
                                                      int projectId, int taskId, Task task)
             throws RuntimeException {

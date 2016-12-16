@@ -1,6 +1,5 @@
 package com.dr3amers.service;
 
-import com.dr3amers.exception.EmailExistsException;
 import com.dr3amers.model.AuthenticatedUser;
 import com.dr3amers.model.User;
 import com.dr3amers.repository.UserJpaRepository;
@@ -30,24 +29,21 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String nickname) throws UsernameNotFoundException {
+
         User user = userJpaRepository.findByNickname(nickname);
-        if (user == null) {
-            throw new UsernameNotFoundException("There is no user with nickname "+ nickname);
-        }
+        if (user == null)
+            throw new UsernameNotFoundException("bad credentials");
+
         return new AuthenticatedUser(user);
     }
 
-    public AuthenticatedUser registerNewAccount(User user) throws EmailExistsException {
-
-        if (user != null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userJpaRepository.saveAndFlush(user);
-            AuthenticatedUser authenticatedUser = new AuthenticatedUser(user);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(authenticatedUser, null,
-                    new ArrayList<>());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            return authenticatedUser;
-        }
-        return null;
+    public AuthenticatedUser registerNewAccount(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userJpaRepository.saveAndFlush(user);
+        AuthenticatedUser authenticatedUser = new AuthenticatedUser(user);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(authenticatedUser, null,
+                new ArrayList<>());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return authenticatedUser;
     }
 }

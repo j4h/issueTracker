@@ -22,6 +22,7 @@ public class Helper {
         return (AuthenticatedUser) auth.getPrincipal();
     }
 
+    //get valid Project
     public static Project getProjectById(ProjectJpaRepository projectJpaRepository, int id)
             throws RuntimeException {
 
@@ -70,6 +71,7 @@ public class Helper {
         return subTasks.get(0);
     }
 
+    //utility methods
     private static Project findProjectById(List<Project> projects, int id) {
         List<Project> collectedProject = projects.stream().filter(project -> project.getId() ==id).collect(Collectors.toList());
         return collectedProject.isEmpty() ? null : collectedProject.get(0);

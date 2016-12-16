@@ -16,7 +16,7 @@ CREATE TABLE PUBLIC.PROJECT
   id INT PRIMARY KEY NOT NULL IDENTITY,
   name VARCHAR(35) NOT NULL,
   description VARCHAR(255),
-  creation_date TIMESTAMP DEFAULT current_timestamp NOT NULL,
+  creation_date TIMESTAMP NOT NULL,
   creator_id INT NOT NULL
 );
 CREATE UNIQUE INDEX "prjct_id_uindex" ON PUBLIC.PROJECT (id);
@@ -27,8 +27,8 @@ CREATE TABLE PUBLIC.TASK
   id INT PRIMARY KEY NOT NULL IDENTITY,
   name VARCHAR(35) NOT NULL,
   description VARCHAR(255),
-  creation_date TIMESTAMP DEFAULT current_timestamp,
-  modification_date TIMESTAMP DEFAULT current_timestamp,
+  creation_date TIMESTAMP NOT NULL,
+  modification_date TIMESTAMP DEFAULT current_timestamp NOT NULL,
   project_id INT NOT NULL,
   status VARCHAR(50) NOT NULL,
   creator_id INT NOT NULL,

@@ -22,12 +22,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
+    //TODO permit registration before login
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.
-            authorizeRequests()
-                .antMatchers("/resources/**, /account/register").permitAll()
+        http
+                .httpBasic()
+                .and()
+            .authorizeRequests()
+                .antMatchers("/account/register", "/resources/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
@@ -36,7 +39,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
             .logout()
                 .logoutUrl("/account/logout")
-                .permitAll();
+                .permitAll()
+                .and()
+                .csrf().disable();
     }
 
     @Bean

@@ -1,6 +1,7 @@
 package com.dr3amers.model;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,11 +14,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column(unique = true)
+    @NotEmpty
     private String nickname;
     @Email
+    @NotEmpty
     private String email;
+    @NotEmpty
     private String name;
+    @NotEmpty
     private String surname;
+    @NotEmpty
     private String password;
 
     //we fetch here projects which user has been assigned

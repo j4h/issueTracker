@@ -3,12 +3,10 @@ package com.dr3amers.controller;
 import com.dr3amers.model.Project;
 import com.dr3amers.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/projects")
@@ -17,34 +15,29 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/{id}")
     public Project getProject(@PathVariable("id") int id){
         return projectService.get(id);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
     public List<Project> getAll(){
         return projectService.getAll();
     }
 
-    //TODO we need ResponseEntity<> here.
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
+    //TODO we need ResponseEntity<> here?
+    @DeleteMapping(value = "/{id}/delete")
     public String delete(@PathVariable("id") int id) {
         projectService.delete(id);
         return "Project with ID:" + id+ " was successfully deleted";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.OK)
+    @PostMapping
     public Project create(@RequestBody @Valid Project project) {
         return projectService.create(project);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(value = "/{id}")
     public Project update(@PathVariable("id") int id, @RequestBody Project project) {
         return projectService.update(id, project);
     }

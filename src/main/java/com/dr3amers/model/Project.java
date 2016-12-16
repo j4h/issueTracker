@@ -1,7 +1,10 @@
 package com.dr3amers.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -20,6 +23,8 @@ public class Project {
     @Column(name = "description")
     private String description;
     @Column(name = "creationDate")
+    @CreatedDate
+    @Generated(GenerationTime.INSERT)
     private Timestamp creationDate;
     //todo QUESTION: "should we have this column in JSON or replace it with JsonIgnore Object User?
     @Column(name = "creator_id")

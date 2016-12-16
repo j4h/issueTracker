@@ -3,7 +3,6 @@ package com.dr3amers.controller;
 import com.dr3amers.model.SubTask;
 import com.dr3amers.service.SubTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,36 +14,31 @@ public class SubTaskController {
     @Autowired
     private SubTaskService subTaskService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping
     public List<SubTask> getAll(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId) {
         return subTaskService.getAll(projectId,taskId);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseStatus(value = HttpStatus.OK)
+    @GetMapping(value = "/{id}")
     public SubTask get(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId,
                        @PathVariable("id") int id) {
         return subTaskService.get(projectId,taskId,id);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(value = "/{id}")
     public String delete(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId,
                          @PathVariable("id") int id) {
         subTaskService.delete(projectId, taskId, id);
         return "SubTask with ID:" + id+ " was successfully deleted";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    @ResponseStatus(value = HttpStatus.OK)
+    @PostMapping
     public SubTask create(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId,
                           @RequestBody SubTask subtask) {
         return subTaskService.create(projectId, taskId, subtask);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @ResponseStatus(value = HttpStatus.OK)
+    @PutMapping(value = "/{id}")
     public SubTask update(@PathVariable("projectId") int projectId, @PathVariable("taskId") int taskId,
                           @PathVariable("id") int id, @RequestBody SubTask subtask) {
         return subTaskService.update(projectId, taskId, id, subtask);
