@@ -3,12 +3,16 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
     <link rel="stylesheet" type="text/css" media="screen"
           href="/static/css/test.css" th:href="@{/css/test.css}"/>
+
     <title>Registration</title>
 </head>
 <body>
-<form action="#" th:action="@{/account/register}" th:object="${user}" method="post">
+<h1>Registration</h1>
+
+<form style="align-items: center" action="#" th:action="@{/account/register}" th:object="${user}" method="post">
     <table>
         <tr>
             <td>Nickname:</td>

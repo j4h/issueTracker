@@ -2,6 +2,7 @@ package com.dr3amers.controller;
 
 import com.dr3amers.model.User;
 import com.dr3amers.service.AuthenticationService;
+import com.dr3amers.validator.RegistrationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,8 +22,14 @@ import javax.validation.Valid;
 @RequestMapping(value = "/account")
 public class LoginController {
 
+    private final AuthenticationService authenticationService;
+    private final RegistrationValidator registrationValidator;
+
     @Autowired
-    private AuthenticationService authenticationService;
+    public LoginController (AuthenticationService authenticationService, RegistrationValidator registrationValidator) {
+        this.authenticationService = authenticationService;
+        this.registrationValidator = registrationValidator;
+    }
 
     //todo test this
     /*@GetMapping(value = "/test", produces="application/json")
@@ -33,6 +40,12 @@ public class LoginController {
                 .add("married", false)
                 .build();
         return result.toString();
+    }*/
+
+    //todo working DataBinder
+    /*@InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.addValidators(registrationValidator);
     }*/
 
     @GetMapping(value = "/logout")
@@ -51,8 +64,10 @@ public class LoginController {
     }
 
     @PostMapping(value = "/register")
-    public String registerNewAccount(@Valid User user, BindingResult bindingResult, Model model) {
+    public String registerNewAccount(@Valid User user, BindingResult bindingResult,
+                                     Model model) {
 
+        registrationValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors())
             return "registerForm";
 
@@ -60,7 +75,6 @@ public class LoginController {
             authenticationService.registerNewAccount(user);
             model.addAttribute("nickname", user.getNickname());
         }
-
         return "registerSuccess";
     }
 }

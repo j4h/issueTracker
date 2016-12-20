@@ -22,7 +22,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
-    //TODO permit registration before login
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -31,7 +30,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
             .authorizeRequests()
                 .antMatchers("/account/register", "/resources/**").permitAll()
-                .anyRequest().authenticated()
                 .and()
             .formLogin()
                 .permitAll()
