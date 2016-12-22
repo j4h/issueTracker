@@ -11,12 +11,22 @@ h1 {
     color: blue;
 }
 
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+.content {
+    display: inline-block;
+    margin: auto;
+}
+
 .floatRight{
 	float:right;
 	margin-right: 18px;
 }
 
-.error{
+.errors{
 	color:red;
 }
 

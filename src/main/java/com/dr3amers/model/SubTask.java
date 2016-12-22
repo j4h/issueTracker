@@ -23,8 +23,8 @@ public class SubTask {
     private String description;
     @Column(name = "creation_date")
     @CreatedDate
-    @Generated(GenerationTime.INSERT)
-    private Timestamp creation_date;
+    @Generated(GenerationTime.ALWAYS)
+    private java.util.Date creation_date;
     @Column(name = "modification_date")
     private Timestamp modification_date;
 
@@ -64,9 +64,9 @@ public class SubTask {
         this.description = description;
     }
 
-    public Timestamp getCreation_date() { return creation_date; }
+    public java.util.Date getCreation_date() { return creation_date; }
 
-    public void setCreation_date(Timestamp creation_date) { this.creation_date = creation_date; }
+    public void setCreation_date(java.util.Date creation_date) { this.creation_date = creation_date; }
 
     public Timestamp getModification_date() { return modification_date; }
 

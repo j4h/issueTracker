@@ -5,11 +5,13 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.List;
 
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 public class Task {
 
@@ -23,10 +25,11 @@ public class Task {
     private String description;
     @Column(name = "creation_date")
     @CreatedDate
-    @Generated(GenerationTime.INSERT)
-    private Timestamp creation_date;
+    @Generated(value = GenerationTime.ALWAYS)
+    private java.util.Date creation_date;
     @Column(name = "modification_date")
-    private Timestamp modification_date;
+    @LastModifiedDate
+    private java.util.Date modification_date;
     @Column(name = "project_id")
     private int projectId;
     @Column(name = "creator_id")
@@ -73,19 +76,19 @@ public class Task {
 
     public void setAssigneeId(int assigneeId) { this.assigneeId = assigneeId; }
 
-    public Timestamp getCreation_date() {
+    public java.util.Date getCreation_date() {
         return creation_date;
     }
 
-    public void setCreation_date(Timestamp creation_date) {
+    public void setCreation_date(java.util.Date creation_date) {
         this.creation_date = creation_date;
     }
 
-    public Timestamp getModification_date() {
+    public java.util.Date getModification_date() {
         return modification_date;
     }
 
-    public void setModification_date(Timestamp modification_date) {
+    public void setModification_date(java.util.Date modification_date) {
         this.modification_date = modification_date;
     }
 

@@ -18,8 +18,8 @@ import java.util.ArrayList;
 @Service
 public class AuthenticationService implements UserDetailsService {
 
-    private UserJpaRepository userJpaRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserJpaRepository userJpaRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public AuthenticationService(UserJpaRepository userJpaRepository, PasswordEncoder passwordEncoder) {
@@ -40,10 +40,12 @@ public class AuthenticationService implements UserDetailsService {
     public AuthenticatedUser registerNewAccount(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userJpaRepository.saveAndFlush(user);
+
         AuthenticatedUser authenticatedUser = new AuthenticatedUser(user);
         Authentication authentication = new UsernamePasswordAuthenticationToken(authenticatedUser, null,
                 new ArrayList<>());
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         return authenticatedUser;
     }
 }

@@ -1,6 +1,7 @@
 package com.dr3amers.controller;
 
 import com.dr3amers.model.User;
+import com.dr3amers.model.form.LoginForm;
 import com.dr3amers.service.AuthenticationService;
 import com.dr3amers.validator.RegistrationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +43,16 @@ public class LoginController {
         return result.toString();
     }*/
 
-    //todo working DataBinder
-    /*@InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.addValidators(registrationValidator);
-    }*/
+    @GetMapping(value = "/login")
+    public String signIn(User user) {
+        return "/login/loginForm";
+    }
+
+    @PostMapping(value = "/login")
+    public String loggedIn(@Valid LoginForm loginForm, BindingResult bindingResult) {
+
+        return bindingResult.hasErrors() ? "loginForm" : "redirect:/projects";
+    }
 
     @GetMapping(value = "/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
@@ -55,26 +61,31 @@ public class LoginController {
         if (auth != null)
             new SecurityContextLogoutHandler().logout(request, response, auth);
 
-        return "redirect:/login";
+        return "redirect:/login/loginForm";
     }
 
-    @GetMapping(value = "/register")
+    @GetMapping(value = "/add")
     public String showRegistrationForm(User user) {
-        return "registerForm";
+        return "/login/registerForm";
     }
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = "/add")
     public String registerNewAccount(@Valid User user, BindingResult bindingResult,
                                      Model model) {
 
         registrationValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors())
-            return "registerForm";
+            return "/login/registerForm";
 
         else {
             authenticationService.registerNewAccount(user);
             model.addAttribute("nickname", user.getNickname());
         }
-        return "registerSuccess";
+        return "/login/registerSuccess";
     }
+
+    /*@InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.addValidators(registrationValidator);
+    }*/
 }

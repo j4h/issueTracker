@@ -52,8 +52,6 @@ public class SubTaskService {
         SubTask initialST = Helper.getSubTaskByIdFromTask(projectJpaRepository, taskJpaRepository, projectId, taskId, subtaskId);
         UpdatesValidator.checkStatusUpdateValidity(initialST.getStatus(), subTask.getStatus());
 
-        //fake code won't be released
-        subTask.setTaskId(taskId);
         return subTaskJpaRepository.saveAndFlush(subTask);
     }
 

@@ -51,8 +51,6 @@ public class TaskService {
         //validation process
         UpdatesValidator.checkTaskStatusUpdateValidity(projectJpaRepository, taskJpaRepository, projectId, taskId, task);
 
-        //fake code that won't be released
-        task.setProjectId(projectId);
         return taskJpaRepository.saveAndFlush(task);
     }
 
