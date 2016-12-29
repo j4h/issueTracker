@@ -24,15 +24,18 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<spring.data.verion>2.5.5.RELEASE</spring.data.verion>
 	</properties>
 
 	<dependencies>
 
+		<!-- REST -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>gs-rest-service</artifactId>
 			<version>0.1.0</version>
 		</dependency>
+
 		<!-- Spring Boot -->
 
 		<dependency>
