@@ -27,6 +27,10 @@ public class SubTask {
     private java.util.Date creation_date;
     @Column(name = "modification_date")
     private Timestamp modification_date;
+    @Column(name = "creator_id")
+    private int creatorId;
+    @Column(name = "deleted")
+    private boolean deleted;
 
     @ManyToOne
     @JsonIgnore
@@ -86,6 +90,22 @@ public class SubTask {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public int getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(int creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
 }

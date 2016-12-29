@@ -39,7 +39,7 @@ public class Helper {
         throw new AccessDeniedException("You have no access to project with ID:"+id);
     }
 
-    //same for Task Entity
+    //get valid Task
     public static Task getTaskById(ProjectJpaRepository projectJpaRepository, TaskJpaRepository taskJpaRepository,
                                    int projectId, int taskId)
             throws RuntimeException {
@@ -58,7 +58,7 @@ public class Helper {
         throw new AccessDeniedException("You have no access to task with ID:"+taskId);
     }
 
-    //same for SubTask Entity
+    //get valid SubTask
     public static SubTask getSubTaskByIdFromTask(ProjectJpaRepository projectJpaRepository, TaskJpaRepository taskJpaRepository,
                                                  int projectId, int taskId, int subTaskId)
         throws RuntimeException {

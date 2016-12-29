@@ -26,9 +26,13 @@ public class Project {
     @CreatedDate
     @Generated(GenerationTime.INSERT)
     private Timestamp creationDate;
+
     //todo QUESTION: "should we have this column in JSON or replace it with JsonIgnore Object User?
     @Column(name = "creator_id")
     private int creatorId;
+
+    @Column(name = "deleted")
+    private boolean deleted;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
@@ -92,6 +96,14 @@ public class Project {
 
     public void setAssignees(Set<User> assignees) {
         this.assignees = assignees;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
 }

@@ -17,7 +17,8 @@ CREATE TABLE PUBLIC.PROJECT
   name VARCHAR(35) NOT NULL,
   description VARCHAR(255),
   creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  creator_id INT NOT NULL
+  creator_id INT NOT NULL,
+  deleted BOOLEAN DEFAULT 0 NOT NULL
 );
 CREATE UNIQUE INDEX "prjct_id_uindex" ON PUBLIC.PROJECT (id);
 CREATE UNIQUE INDEX "prjct_name_uindex" ON PUBLIC.PROJECT (name);
@@ -32,7 +33,8 @@ CREATE TABLE PUBLIC.TASK
   project_id INT NOT NULL,
   status VARCHAR(50) NOT NULL,
   creator_id INT NOT NULL,
-  assignee_id INT NOT NULL
+  assignee_id INT NOT NULL,
+  deleted BOOLEAN DEFAULT 0 NOT NULL
 );
 CREATE UNIQUE INDEX "tsk_id_uindex" ON PUBLIC.TASK (id);
 CREATE UNIQUE INDEX "tsk_name_uindex" ON PUBLIC.TASK (name);
@@ -56,8 +58,10 @@ CREATE TABLE PUBLIC.SUB_TASK
   description VARCHAR(255),
   creation_date DATE NOT NULL,
   modification_date TIMESTAMP DEFAULT current_timestamp,
+  creator_id INT NOT NULL,
   task_id INT NOT NULL,
-  status VARCHAR(35) NOT NULL
+  status VARCHAR(35) NOT NULL,
+  deleted BOOLEAN DEFAULT 0 NOT NULL
 );
 CREATE UNIQUE INDEX "sbtsk_id_uindex" ON PUBLIC.SUB_TASK (id);
 CREATE UNIQUE INDEX "sbtsk_name_uindex" ON PUBLIC.SUB_TASK (name);

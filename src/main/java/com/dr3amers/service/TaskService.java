@@ -1,7 +1,8 @@
 package com.dr3amers.service;
 
 import com.dr3amers.helper.Helper;
-import com.dr3amers.validator.UpdatesValidator;
+import com.dr3amers.validator.CrudAccessValidator;
+import com.dr3amers.validator.StatusUpdatesValidator;
 import com.dr3amers.model.Task;
 import com.dr3amers.repository.ProjectJpaRepository;
 import com.dr3amers.repository.TaskJpaRepository;
@@ -13,8 +14,8 @@ import java.util.List;
 @Service
 public class TaskService {
 
-    private TaskJpaRepository taskJpaRepository;
-    private ProjectJpaRepository projectJpaRepository;
+    private final TaskJpaRepository taskJpaRepository;
+    private final ProjectJpaRepository projectJpaRepository;
 
     @Autowired
     public TaskService(TaskJpaRepository taskJpaRepository, ProjectJpaRepository projectJpaRepository) {
@@ -34,13 +35,17 @@ public class TaskService {
         return Helper.getTaskById(projectJpaRepository, taskJpaRepository, projectId, taskId);
     }
 
+    //actually, we aren't delete any data, just hide it
     public void delete(int projectId, int taskId) {
-        get(projectId, taskId);
-        taskJpaRepository.delete(taskId);
+        Task task = get(projectId, taskId);
+        CrudAccessValidator.modelUpdateValidation(task, task.getCreatorId());
+        setAllBoundEntitiesDeleted(task);
+        taskJpaRepository.saveAndFlush(task);
     }
 
     public Task create(int projectId, Task task) {
         Helper.getProjectById(projectJpaRepository, projectId);
+        task.setCreatorId(Helper.getCurrentUser().getId());
 
         //fake code that won't be released
         task.setProjectId(projectId);
@@ -49,9 +54,14 @@ public class TaskService {
 
     public Task update(int projectId, int taskId, Task task) {
         //validation process
-        UpdatesValidator.checkTaskStatusUpdateValidity(projectJpaRepository, taskJpaRepository, projectId, taskId, task);
+        StatusUpdatesValidator.checkTaskStatusUpdateValidity(projectJpaRepository, taskJpaRepository, projectId, taskId, task);
 
         return taskJpaRepository.saveAndFlush(task);
+    }
+
+    private void setAllBoundEntitiesDeleted(Task task) {
+        task.setDeleted(true);
+        task.getSubTaskList().forEach(subTask -> subTask.setDeleted(true));
     }
 
 }

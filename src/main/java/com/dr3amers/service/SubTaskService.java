@@ -1,7 +1,8 @@
 package com.dr3amers.service;
 
 import com.dr3amers.helper.Helper;
-import com.dr3amers.validator.UpdatesValidator;
+import com.dr3amers.validator.CrudAccessValidator;
+import com.dr3amers.validator.StatusUpdatesValidator;
 import com.dr3amers.model.SubTask;
 import com.dr3amers.repository.ProjectJpaRepository;
 import com.dr3amers.repository.SubTaskJpaRepository;
@@ -14,9 +15,9 @@ import java.util.List;
 @Service
 public class SubTaskService {
 
-    private SubTaskJpaRepository subTaskJpaRepository;
-    private ProjectJpaRepository projectJpaRepository;
-    private TaskJpaRepository taskJpaRepository;
+    private final SubTaskJpaRepository subTaskJpaRepository;
+    private final ProjectJpaRepository projectJpaRepository;
+    private final TaskJpaRepository taskJpaRepository;
 
     @Autowired
     public SubTaskService(SubTaskJpaRepository subTaskJpaRepository, ProjectJpaRepository projectJpaRepository,
@@ -34,13 +35,17 @@ public class SubTaskService {
         return Helper.getSubTaskByIdFromTask(projectJpaRepository, taskJpaRepository, projectId, taskId, subtaskId);
     }
 
+    //actually, we aren't delete any data, just hide it
     public void delete(int projectId, int taskId, int subtaskId) {
-        get(projectId, taskId, subtaskId);
-        subTaskJpaRepository.delete(subtaskId);
+        SubTask subTask = get(projectId, taskId, subtaskId);
+        CrudAccessValidator.modelUpdateValidation(subTask, subTask.getTask().getCreatorId());
+        subTask.setDeleted(true);
+        subTaskJpaRepository.saveAndFlush(subTask);
     }
 
     public SubTask create(int projectId, int taskId, SubTask subTask) {
         Helper.getTaskById(projectJpaRepository, taskJpaRepository, projectId, taskId);
+        subTask.setCreatorId(Helper.getCurrentUser().getId());
 
         //fake code won't be released
         subTask.setTaskId(taskId);
@@ -50,7 +55,7 @@ public class SubTaskService {
     public SubTask update(int projectId, int taskId, int subtaskId, SubTask subTask) {
         //validation process
         SubTask initialST = Helper.getSubTaskByIdFromTask(projectJpaRepository, taskJpaRepository, projectId, taskId, subtaskId);
-        UpdatesValidator.checkStatusUpdateValidity(initialST.getStatus(), subTask.getStatus());
+        StatusUpdatesValidator.checkStatusUpdateValidity(initialST.getStatus(), subTask.getStatus());
 
         return subTaskJpaRepository.saveAndFlush(subTask);
     }

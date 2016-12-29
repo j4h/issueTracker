@@ -32,7 +32,7 @@ public class AuthenticationService implements UserDetailsService {
 
         User user = userJpaRepository.findByNickname(nickname);
         if (user == null)
-            throw new UsernameNotFoundException("bad credentials");
+            throw new UsernameNotFoundException("Bad credentials. Please, try again.");
 
         return new AuthenticatedUser(user);
     }
@@ -41,6 +41,12 @@ public class AuthenticationService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userJpaRepository.saveAndFlush(user);
 
+        return setAuthentication(user);
+    }
+
+    //setting authenticationToken
+    private AuthenticatedUser setAuthentication(User user) {
+
         AuthenticatedUser authenticatedUser = new AuthenticatedUser(user);
         Authentication authentication = new UsernamePasswordAuthenticationToken(authenticatedUser, null,
                 new ArrayList<>());
@@ -48,4 +54,5 @@ public class AuthenticationService implements UserDetailsService {
 
         return authenticatedUser;
     }
+
 }

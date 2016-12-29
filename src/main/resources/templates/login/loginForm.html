@@ -9,23 +9,22 @@
 </head>
 
 <body>
-
-<form class="form-narrow form-horizontal" action="#" method="post" th:action="@{/account/login}">
+<form class="form-narrow form-horizontal" action="login" th:object="${loginForm}" method="post" th:action="@{/account/login}">
     <th:block th:if="${param.error != null}">
-        <div th:replace="fragments/alert :: alert (type='danger', message='Something is wrong. Please, try again.')">Alert</div>
+        <div th:replace="fragments/alert :: alert (type='danger', message='Bad credentials. Please, try again.')">Alert</div>
     </th:block>
     <fieldset>
         <legend>Sign In</legend>
         <div class="form-group">
             <label for="inputNickname" class="col-lg-2 control-label">Nickname</label>
             <div class="col-lg-10">
-                <input type="text" class="form-control" id="inputNickname" placeholder="enter your nickname" name="nickname" />
+                <input type="text" class="form-control" id="inputNickname" placeholder="Nickname" name="nickname" />
             </div>
         </div>
         <div class="form-group">
             <label for="inputPassword" class="col-lg-2 control-label">Password</label>
             <div class="col-lg-10">
-                <input type="text" class="form-control" id="inputPassword" placeholder="your pass, than enter =)" name="password" />
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password" />
             </div>
         </div>
         <div class="form-group">

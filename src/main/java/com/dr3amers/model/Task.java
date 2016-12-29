@@ -36,6 +36,8 @@ public class Task {
     private int creatorId;
     @Column(name = "assignee_id")
     private int assigneeId;
+    @Column(name = "deleted")
+    private boolean deleted;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -103,5 +105,13 @@ public class Task {
     public Status getStatus() { return status; }
 
     public void setStatus(Status status) { this.status = status; }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
 }

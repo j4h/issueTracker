@@ -32,26 +32,9 @@ public class LoginController {
         this.registrationValidator = registrationValidator;
     }
 
-    //todo test this
-    /*@GetMapping(value = "/test", produces="application/json")
-    public String test() {
-        JsonObject result = Json.createObjectBuilder()
-                .add("name", "Dade")
-                .add("age", 23)
-                .add("married", false)
-                .build();
-        return result.toString();
-    }*/
-
     @GetMapping(value = "/login")
-    public String signIn(User user) {
+    public String signIn(LoginForm loginForm) {
         return "/login/loginForm";
-    }
-
-    @PostMapping(value = "/login")
-    public String loggedIn(@Valid LoginForm loginForm, BindingResult bindingResult) {
-
-        return bindingResult.hasErrors() ? "loginForm" : "redirect:/projects";
     }
 
     @GetMapping(value = "/logout")

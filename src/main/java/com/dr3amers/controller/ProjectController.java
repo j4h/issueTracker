@@ -21,12 +21,12 @@ public class ProjectController {
     }
 
     @GetMapping
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Project> getAll(){
         return projectService.getAll();
     }
 
-    //TODO we need ResponseEntity<> here?
-    @DeleteMapping(value = "/{id}/delete")
+    @DeleteMapping(value = "/{id}")
     public String delete(@PathVariable("id") int id) {
         projectService.delete(id);
         return "Project with ID:" + id+ " was successfully deleted";
@@ -41,4 +41,15 @@ public class ProjectController {
     public Project update(@PathVariable("id") int id, @RequestBody Project project) {
         return projectService.update(id, project);
     }
+
+    //todo modelUpdateValidation this
+    /*@GetMapping(value = "/modelUpdateValidation", produces="application/json")
+    public String modelUpdateValidation() {
+        JsonObject result = Json.createObjectBuilder()
+                .add("name", "Dade")
+                .add("age", 23)
+                .add("married", false)
+                .build();
+        return result.toString();
+    }*/
 }
